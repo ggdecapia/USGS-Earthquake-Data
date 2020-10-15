@@ -14,18 +14,86 @@ function createFeatures(earthquakeData) {
     // Define a function we want to run once for each feature in the features array
     // Give each feature a popup describing the place and time of the earthquake
     function onEachFeature(features, layer) {
-      layer.bindPopup("<h3>" + "Earthquake ID: " + features.id + "</h3>" + "<hr>" + "Coordinates: " + features.geometry.coordinates);
+      layer.bindPopup("<h3>" + "Earthquake ID: " + features.id + "</h3>" + "<hr>" + "Coordinates: " + features.geometry.coordinates[0] + ", " + features.geometry.coordinates[1] + "<br>" + "Magnitude: " + features.properties.mag);
     }
-  
+
+    function colorSelect(magnitude){
+      
+      var magnitudeFloat = parseFloat(magnitude);
+      console.log("magnitudeFloat is ", parseFloat(magnitudeFloat));      
+      /*switch(magnitudeFloat)
+      {
+        case 0-1:
+          console.log("the number is less than or equal to 1");
+          break;
+        case 1.01-2:
+          console.log("the number is less than or equal to 2");
+          break;
+        case 2.01-3:
+          console.log("the number is less than or equal to 3");
+          break;
+        case 3.01-4:
+          console.log("the number is less than or equal to 4");
+          break;
+        case 4.01-5:
+          console.log("the number is less than or equal to 5");
+          break;                
+        default:
+          console.log("the number is greater than 5");
+          break;
+      };*/
+      if (magnitudeFloat <= 1)
+      {
+        console.log("the number is less than or equal to 1");
+        return "#65C3B3";
+      }
+      else if (magnitudeFloat <= 2)
+      {
+        console.log("the number is less than or equal to 2");
+        return "#4B9689";
+      }
+      else if (magnitudeFloat <= 3)
+      {
+        console.log("the number is less than or equal to 3");
+        return "#327368";
+      }
+      else if (magnitudeFloat <= 4)
+      {
+        console.log("the number is less than or equal to 4");
+        return "#1C564D";
+      }
+      else if (magnitudeFloat <= 5)
+      {
+        console.log("the number is less than or equal to 5");
+        return "#0D4037";
+      }
+      else
+      {
+        console.log("the number is greater than 5");
+        return "#042D26";
+      }
+}
+
     // Create a GeoJSON layer containing the features array on the earthquakeData object
     // Run the onEachFeature function once for each piece of data in the array
-    var earthquakes = L.geoJSON(earthquakeData, {
+    
+    var earthquakes = L.geoJSON(earthquakeData, 
+    {
+      pointToLayer: function(earthquakeData, latlng)
+      {
+        return L.circle(latlng,
+        {
+          radius: (earthquakeData.properties.mag * 30000),
+          color:  colorSelect(earthquakeData.properties.mag),
+          fillOpacity: 1
+        });
+      },
       onEachFeature: onEachFeature
     });
-  
+
     // Sending our earthquakes layer to the createMap function
     createMap(earthquakes);
-  }
+}
 
   function createMap(earthquakes) {
 
@@ -51,7 +119,8 @@ function createFeatures(earthquakeData) {
       "Street Map": streetmap,
       "Dark Map": darkmap
     };
-  
+ 
+
     // Create overlay object to hold our overlay layer
     var overlayMaps = {
       Earthquakes: earthquakes
