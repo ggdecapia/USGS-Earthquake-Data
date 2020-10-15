@@ -21,27 +21,8 @@ function createFeatures(earthquakeData) {
       
       var magnitudeFloat = parseFloat(magnitude);
       console.log("magnitudeFloat is ", parseFloat(magnitudeFloat));      
-      /*switch(magnitudeFloat)
-      {
-        case 0-1:
-          console.log("the number is less than or equal to 1");
-          break;
-        case 1.01-2:
-          console.log("the number is less than or equal to 2");
-          break;
-        case 2.01-3:
-          console.log("the number is less than or equal to 3");
-          break;
-        case 3.01-4:
-          console.log("the number is less than or equal to 4");
-          break;
-        case 4.01-5:
-          console.log("the number is less than or equal to 5");
-          break;                
-        default:
-          console.log("the number is greater than 5");
-          break;
-      };*/
+      
+     
       if (magnitudeFloat <= 1)
       {
         console.log("the number is less than or equal to 1");
@@ -141,4 +122,31 @@ function createFeatures(earthquakeData) {
     L.control.layers(baseMaps, overlayMaps, {
       collapsed: false
     }).addTo(myMap);
-  }
+
+  // Set up the legend
+  var legend = L.control({ position: "bottomright" });
+
+  legend.onAdd = function() 
+  {
+    var div = L.DomUtil.create("div", "info legend");
+    var labels = [];
+
+    // Add min & max
+    var legendInfo = "<h1>&nbsp;Magnitude: &nbsp;</h1>" +
+      "<div style=\"background-color: #08FB48\">&nbsp;Less than or equal to 1</div>" +
+      "<div style=\"background-color: #ADFB08\">&nbsp;Less than or equal to 2</div>" +
+      "<div style=\"background-color: #FBF608\">&nbsp;Less than or equal to 3</div>" +
+      "<div style=\"background-color: #FBA408\">&nbsp;Less than or equal to 4</div>" +
+      "<div style=\"background-color: #FB5A08\">&nbsp;Less than or equal to 5</div>" +
+      "<div style=\"background-color: #FB0808\">&nbsp;More than 5</div>" ;
+
+    div.innerHTML = legendInfo;
+
+    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+    return div;
+  };
+
+  // Adding legend to the map
+  legend.addTo(myMap);
+
+}
