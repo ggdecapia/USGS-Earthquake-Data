@@ -45,32 +45,32 @@ function createFeatures(earthquakeData) {
       if (magnitudeFloat <= 1)
       {
         console.log("the number is less than or equal to 1");
-        return "#65C3B3";
+        return "#08FB48";
       }
       else if (magnitudeFloat <= 2)
       {
         console.log("the number is less than or equal to 2");
-        return "#4B9689";
+        return "#ADFB08";
       }
       else if (magnitudeFloat <= 3)
       {
         console.log("the number is less than or equal to 3");
-        return "#327368";
+        return "#FBF608";
       }
       else if (magnitudeFloat <= 4)
       {
         console.log("the number is less than or equal to 4");
-        return "#1C564D";
+        return "#FBA408";
       }
       else if (magnitudeFloat <= 5)
       {
         console.log("the number is less than or equal to 5");
-        return "#0D4037";
+        return "#FB5A08";
       }
       else
       {
         console.log("the number is greater than 5");
-        return "#042D26";
+        return "#FB0808";
       }
 }
 
