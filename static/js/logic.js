@@ -1,5 +1,4 @@
 // URL of all earthquake data in the past 7days
-//var queryURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson";
 var queryURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
 d3.json(queryURL, function(earthquakeData) {
@@ -17,42 +16,31 @@ function createFeatures(earthquakeData) {
       layer.bindPopup("<h3>" + "Earthquake ID: " + features.id + "</h3>" + "<hr>" + "Coordinates: " + features.geometry.coordinates[0] + ", " + features.geometry.coordinates[1] + "<br>" + "Magnitude: " + features.properties.mag);
     }
 
+    // sets the color of the circle based on magnitude
     function colorSelect(magnitude){
       
       var magnitudeFloat = parseFloat(magnitude);
-      console.log("magnitudeFloat is ", parseFloat(magnitudeFloat));      
+      var color = "#FB0808";
       
-     
-      if (magnitudeFloat <= 1)
+      switch(true)
       {
-        console.log("the number is less than or equal to 1");
-        return "#08FB48";
-      }
-      else if (magnitudeFloat <= 2)
-      {
-        console.log("the number is less than or equal to 2");
-        return "#ADFB08";
-      }
-      else if (magnitudeFloat <= 3)
-      {
-        console.log("the number is less than or equal to 3");
-        return "#FBF608";
-      }
-      else if (magnitudeFloat <= 4)
-      {
-        console.log("the number is less than or equal to 4");
-        return "#FBA408";
-      }
-      else if (magnitudeFloat <= 5)
-      {
-        console.log("the number is less than or equal to 5");
-        return "#FB5A08";
-      }
-      else
-      {
-        console.log("the number is greater than 5");
-        return "#FB0808";
-      }
+        case (magnitudeFloat <= 1.0):
+          color = "#08FB48";
+          break;
+        case (magnitudeFloat <= 2.0):
+          color = "#ADFB08";
+          break;
+        case (magnitudeFloat <= 3.0):
+          color = "#FBF608";
+          break;
+        case (magnitudeFloat <= 4.0):
+          color = "#FBA408";
+          break;
+        case (magnitudeFloat <= 5.0):
+          color = "#FB5A08";
+          break;                
+      };
+      return color;
 }
 
     // Create a GeoJSON layer containing the features array on the earthquakeData object
@@ -64,7 +52,9 @@ function createFeatures(earthquakeData) {
       {
         return L.circle(latlng,
         {
+          // sets the size of the circle based on magnitude
           radius: (earthquakeData.properties.mag * 30000),
+          // calls the function that returns the color of each circle
           color:  colorSelect(earthquakeData.properties.mag),
           fillOpacity: 1
         });
@@ -132,7 +122,7 @@ function createFeatures(earthquakeData) {
     var labels = [];
 
     // Add min & max
-    var legendInfo = "<h1>&nbsp;Magnitude: &nbsp;</h1>" +
+    var legendInfo = "<h2>&nbsp;Legend (Magnitude): &nbsp;</h2>" +
       "<div style=\"background-color: #08FB48\">&nbsp;Less than or equal to 1</div>" +
       "<div style=\"background-color: #ADFB08\">&nbsp;Less than or equal to 2</div>" +
       "<div style=\"background-color: #FBF608\">&nbsp;Less than or equal to 3</div>" +
@@ -148,5 +138,4 @@ function createFeatures(earthquakeData) {
 
   // Adding legend to the map
   legend.addTo(myMap);
-
 }
