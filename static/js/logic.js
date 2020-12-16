@@ -45,7 +45,7 @@ function createFeatures(earthquakeData) {
 
     // Create a GeoJSON layer containing the features array on the earthquakeData object
     // Run the onEachFeature function once for each piece of data in the array
-    
+
     var earthquakes = L.geoJSON(earthquakeData, 
     {
       pointToLayer: function(earthquakeData, latlng)
@@ -66,7 +66,7 @@ function createFeatures(earthquakeData) {
     createMap(earthquakes);
 }
 
-  function createMap(earthquakes) {
+function createMap(earthquakes) {
 
     // Define streetmap and darkmap layers
     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
